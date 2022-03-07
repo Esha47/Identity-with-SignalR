@@ -1,0 +1,53 @@
+﻿@model SignalR_with_identity.Models.UserApp
+
+@{
+     ViewData["Title"] = "Home page";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SignalR Simple Chat</title>
+    <style type="text/css">
+        .container {
+            background-color: #99CCFF;
+            border: thick solid #808080;
+            padding: 20px;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+  <div class="signalr-demo">
+  
+    <hr />
+    <ul id="messageList" style="text-align:left;"></ul>
+</div>
+
+    
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+   
+
+   <script type="text/javascript">
+     
+         var model= @Html.Raw(Json.Serialize(Model));
+
+    const connection = new signalR.HubConnectionBuilder().withUrl("/userHub").build(); 
+    //bug where u r invoking after calling start, without waiting on start to complete..or add delay bwteen start and invoke.
+    connection.start().then(()=>{
+       
+        connection.invoke("SendUserInfo",model).catch(w => alert(w.toString())); 
+    });
+   // connection.start().catch(err => alert(err.toString()));
+   //   connection.invoke('SendUserInfo',"Dfg").catch(w => alert(w.toString())); 
+   connection.on("ReceiveMessage",(userModel)=>{
+  
+       const li=document.createElement('li');
+       li.textContent=`${userModel.username}: ${userModel.email}`;
+       document.getElementById("messageList").appendChild(li);
+   });
+</script>
+
+</body>
+</html>

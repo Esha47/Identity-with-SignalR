@@ -1,0 +1,45 @@
+﻿@model SignalR_with_identity.Models.UserApp
+
+@{
+    ViewData["Title"] = "updateUser";
+}
+
+<h1>updateUser</h1>
+
+<h4>UserApp</h4>
+<hr />
+@using (Html.BeginForm())     
+{    
+    @Html.AntiForgeryToken()    
+      <div class="form-horizontal">    
+        <div>update User</div>    
+             <div class="form-group">    
+            @Html.LabelFor(model => model.Username, htmlAttributes: new { @class = "control-label col-md-2" })    
+            <div class="col-md-10">    
+                @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control" } })    
+                @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })    
+            </div>    
+        </div>    
+    
+        <div class="form-group">    
+            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })    
+            <div class="col-md-10">    
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control",@disabled="disabled" } })    
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })    
+            </div>    
+        </div>    
+  <div class="form-group">    
+            <div class="col-md-offset-2 col-md-10">    
+                <input type="submit" value="updateUser" class="btn btn-default" />    
+            </div>    
+       
+    </div>
+</div>
+}
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
